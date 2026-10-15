@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Shield - AI Plagiarism Detector | Team HK26-0020</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <!-- Header Section - Designed by Team HK26-0020 -->
+    <header class="header-main">
+        <div class="logo-box">
+            <div class="logo-icon">🛡️</div>
+            <div>
+                <h1>CYBER<span>SHIELD</span></h1>
+                <p>V2 PRO • AI DETECTOR</p>
+            </div>
+        </div>
+        <div class="header-center">
+            <span class="dot"></span> 10,000+ docs checked • Trusted by 500+ teachers
+        </div>
+        <div class="header-right">
+            <button class="bell">🔔</button>
+            <button id="photoBtn" class="photo-btn">📷 Photo se Search</button>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <button class="tab active" data-tab="single">🏠 Single Check</button>
+        <button class="tab" data-tab="bulk">📊 Bulk Check</button>
+        <button class="tab" data-tab="ocr">📷 OCR Scan</button>
+        <button class="tab" data-tab="url">🔗 URL Scan</button>
+        <button class="tab" data-tab="human">✍️ Humanizer</button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">✨ Students ka favourite • Bilkul free • No login needed</div>
+        <h2 class="hero-title">Apna content ka <span>AI test</span> karvao 🛡️</h2>
+        <p class="hero-sub">AI ne likha ya human ne? Plagiarism hai ya original? Ek click me pata karo!</p>
+        
+        <div class="search-box">
+            <input id="aiSearchInput" type="text" placeholder="AI Smart Search: 'Mera essay check karo, AKTU assignment hai'">
+            <button onclick="handleAISearch()" class="search-btn">AI Search 🧠</button>
+            <button onclick="startVoiceSearch()" class="voice-btn">🎙️</button>
+        </div>
+
+        <div class="slider-box">
+            <div class="slider-head">
+                <span>📝 Words to check</span>
+                <span id="wordLimit">15,000 tak</span>
+            </div>
+            <input type="range" id="wordRange" min="100" max="15000" value="15000" oninput="updateRange(this.value)">
+        </div>
+
+        <div class="chips">
+            <span>📍 Academic</span><span>📍 Blog</span><span>📍 Assignment</span><span>📍 Research</span><span>📍 Lucknow</span><span>📍 Delhi</span>
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <input id="filterInput" placeholder="🔍 Search in results..." oninput="filterResults()">
+        <select><option>Recommended</option><option>AI Score High</option></select>
+        <button>⚙️ Filters</button>
+        <button>🗺️ Map View</button>
+        <button class="ai-pucho" onclick="askAI()">🤖 AI se pucho</button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-grid">
+        <!-- Left Input -->
+        <div class="card input-card">
+            <div class="card-head">
+                <span>📄 INPUT DOCUMENT</span>
+                <span id="count">0 words • 0 chars</span>
+            </div>
+            <div class="examples">
+                <button onclick="loadExample('human')">Try Human Example</button>
+                <button onclick="loadExample('ai')">Try AI Example</button>
+                <button onclick="loadExample('academic')">Try Academic Example</button>
+                <label class="upload-label"><input type="file" id="fileUpload" accept=".txt" hidden onchange="handleFile(event)"> 📄 Upload .txt</label>
+            </div>
+            <textarea id="mainText" placeholder="Paste your essay, article, or assignment here to check for AI and plagiarism..."></textarea>
+            <div class="actions">
+                <button onclick="checkAI()" class="check-btn">⚡ Check for AI & Plagiarism</button>
+                <button onclick="clearText()" class="clear-btn">Clear</button>
+            </div>
+        </div>
+
+        <!-- Right Result -->
+        <div class="card result-card" id="resultCard">
+            <div id="emptyState">
+                <div class="icon">✨</div>
+                <h3>Awaiting document</h3>
+                <p>Paste text and hit Check. You will get AI score, plagiarism check, sentence highlighting and blockchain certificate.</p>
+                <div class="stats">
+                    <div><b>98.2%</b><span>ACCURACY</span></div>
+                    <div><b>&lt;2s</b><span>SCAN TIME</span></div>
+                    <div><b>500+</b><span>TEACHERS</span></div>
+                </div>
+            </div>
+            <div id="resultState" class="hidden">
+                <h3 id="verdict" class="verdict"></h3>
+                <div class="gauges">
+                    <div class="gauge"><div class="circle" id="aiGauge">0%</div><p>AI Score</p></div>
+                    <div class="gauge"><div class="circle" id="plagGauge">0%</div><p>Plagiarism</p></div>
+                    <div class="gauge"><div class="circle" id="humGauge">0%</div><p>Human</p></div>
+                </div>
+                <div class="details">
+                    <p>Perplexity: <span id="perplex">-</span> | Burstiness: <span id="burst">-</span></p>
+                    <div id="highlightArea" class="highlight"></div>
+                    <p id="triggerWords" class="trigger"></p>
+                    <div class="bar-chart" id="barChart"></div>
+                </div>
+                <div class="result-actions">
+                    <button onclick="downloadReport()">📥 Download Report</button>
+                    <button onclick="shareReport()">🔗 Share</button>
+                    <button onclick="humanize()">✍️ Humanize</button>
+                    <button onclick="genCertificate()">🔐 Certificate</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Team HK26-0020 | CHAKRAVYUH 1.0 Hackathon | Domain 1 - AI Solutions | Problem AS-01</p>
+        <p>Built with ❤️ in Lucknow - No data leaves browser - Frontend only</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="./js/ocr.js"></script>
+</body>
+</html>
